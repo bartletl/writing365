@@ -44,13 +44,13 @@ function writing365_page_user($account) {
       drupal_set_message(t('!author has not created any journal entries.', array('!author' => theme('username', array('account' => $account)))));
     }
   }
-  drupal_add_feed('blog/' . $account->uid . '/feed', t('RSS - !title', array('!title' => $title)));
+  drupal_add_feed('writing365/' . $account->uid . '/feed', t('RSS - !title', array('!title' => $title)));
 
   return $build;
 }
 
 /**
- * Menu callback; displays a Drupal page containing recent blog entries of all users.
+ * Menu callback; displays a Drupal page containing recent journal entries of all users.
  */
 function writing365_page_last() {
   global $user;
@@ -59,7 +59,7 @@ function writing365_page_last() {
   $query = db_select('node', 'n')->extend('PagerDefault');
   $nids = $query
     ->fields('n', array('nid', 'sticky', 'created'))
-    ->condition('type', 'blog')
+    ->condition('type', 'journal')
     ->condition('status', 1)
     ->orderBy('sticky', 'DESC')
     ->orderBy('created', 'DESC')
@@ -101,7 +101,7 @@ function writing365_feed_user($account) {
     ->fetchCol();
 
   $channel['title'] = t("!name's journal", array('!name' => format_username($account)));
-  $channel['link'] = url('journal/' . $account->uid, array('absolute' => TRUE));
+  $channel['link'] = url('writing365/' . $account->uid, array('absolute' => TRUE));
 
   node_feed($nids, $channel);
 }

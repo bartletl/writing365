@@ -19,5 +19,8 @@ function writing365_install() {
  * Implements hook_uninstall().
  */
 function writing365_uninstall() {
-  variable_del('writing360_block_count');
+  variable_del('writing365_block_count');
+  $node_type_delete = db_delete('node_type')
+  	->condition('module', 'writing365')
+  	->execute();
 }
