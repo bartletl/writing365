@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Page callback file for the Writing 360 module.
+ * Page callback file for the Writing365 module.
  */
 
 /**
@@ -18,7 +18,7 @@ function writing365_page_user($account) {
   $query = db_select('node', 'n')->extend('PagerDefault');
   $nids = $query
     ->fields('n', array('nid', 'sticky', 'created'))
-    ->condition('type', 'blog')
+    ->condition('type', 'journal')
     ->condition('uid', $account->uid)
     ->condition('status', 1)
     ->orderBy('sticky', 'DESC')
@@ -91,7 +91,7 @@ function writing365_feed_user($account) {
 
   $nids = db_select('node', 'n')
     ->fields('n', array('nid', 'created'))
-    ->condition('type', 'blog')
+    ->condition('type', 'journal')
     ->condition('uid', $account->uid)
     ->condition('status', 1)
     ->orderBy('created', 'DESC')
