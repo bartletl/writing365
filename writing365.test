@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Tests for blog.module.
+ * Tests for writing365.module.
  */
 
 class BlogTestCase extends DrupalWebTestCase {
@@ -25,7 +25,7 @@ class BlogTestCase extends DrupalWebTestCase {
     parent::setUp('blog');
     // Create users.
     $this->big_user = $this->drupalCreateUser(array('administer blocks'));
-    $this->own_user = $this->drupalCreateUser(array('create blog content', 'edit own blog content', 'delete own blog content'));
+    $this->own_user = $this->drupalCreateUser(array('create journal content', 'edit own blog content', 'delete own blog content'));
     $this->any_user = $this->drupalCreateUser(array('create blog content', 'edit any blog content', 'delete any blog content', 'access administration pages'));
   }
 

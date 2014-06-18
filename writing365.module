@@ -45,10 +45,10 @@
 function writing365_node_info() {
   return array(
     'writing365' => array(
-      'name' => t('Writing 365 journal'),
+      'name' => t('Writing 365 Journal Entry'),
       'base' => 'writing365',
       'description' => t('Use for Writing 365 journals. Every student gets a personal journal.'),
-      'help' => 'admin/help#writing365',
+      'help' => t('This is your personal journal and is only visible to you. Write at least 365 words, and you will get credit for having written today.'),
       'has_title' => TRUE,
       'locked' => TRUE,
     )
@@ -94,9 +94,9 @@ function writing365_user_view($account) {
   if (user_access('create writing365 content', $account)) {
     $account->content['summary']['writing365'] =  array(
       '#type' => 'user_profile_item',
-      '#title' => t('Writing 365'),
+      '#title' => t('Writing 365 Journal'),
       // l() escapes the attributes, so we should not escape !username here.
-      '#markup' => l(t('View recent journal entries'), "journal/$account->uid", array('attributes' => array('title' => t("Read !username's latest journal entries.", array('!username' => format_username($account)))))),
+      '#markup' => l(t('View recent journal entries'), "writing365/$account->uid", array('attributes' => array('title' => t("Read !username's latest journal entries.", array('!username' => format_username($account)))))),
       '#attributes' => array('class' => array('journal')),
     );
   }
@@ -106,6 +106,7 @@ function writing365_user_view($account) {
  * Implements hook_help().
  */
 function writing365_help($path, $arg) {
+	
   switch ($path) {
     case 'admin/help#writing365':
       $output = '<h3>' . t('About') . '</h3>';
@@ -182,7 +183,7 @@ function writing365_view($node, $view_mode) {
  */
 function writing365_node_view($node, $view_mode) {
   if ($view_mode != 'rss') {
-    if ($node->type == 'journal' && (arg(0) != 'journal' || arg(1) != $node->uid)) {
+    if ($node->type == 'writing365' && (arg(0) != 'writing365' || arg(1) != $node->uid)) {
       // This goes to l(), which escapes !username in both title and attributes.
       $links['journal_usernames_journal'] = array(
         'title' => t("!username's journal", array('!username' => format_username($node))),
@@ -247,7 +248,7 @@ function writing365_menu() {
 function writing365_menu_local_tasks_alter(&$data, $router_item, $root_path) {
   global $user;
 
-  // Add action link to 'node/add/writing365' on 'blog' page.
+  // Add action link to 'node/add/writing365' on 'journal' page.
   if ($root_path == 'writing365') {
     $item = menu_get_item('node/add/writing365');
     if ($item['access']) {
@@ -258,7 +259,7 @@ function writing365_menu_local_tasks_alter(&$data, $router_item, $root_path) {
       );
     }
   }
-  // Provide a helper action link to the author on the 'blog/%' page.
+  // Provide a helper action link to the author on the 'writing365/%' page.
   elseif ($root_path == 'writing365/%' && $router_item['page_arguments'][0]->uid == $user->uid) {
     $data['actions']['output']['writing365'] = array(
       '#theme' => 'menu_local_action',
@@ -275,6 +276,9 @@ function writing365_menu_local_tasks_alter(&$data, $router_item, $root_path) {
 
 /**
  * Access callback for user blog pages.
+ * 
+ * This is not a hook, so we need to check how it's immplemented.
+ * @todo check
  */
 function writing365_page_user_access($account) {
   // The visitor must be able to access the site's content.
@@ -342,7 +346,7 @@ function writing365_block_view($delta = '') {
   if (user_access('access content')) {
     $result = db_select('node', 'n')
       ->fields('n', array('nid', 'title', 'created'))
-      ->condition('type', 'journal')
+      ->condition('type', 'writing365')
       ->condition('status', 1)
       ->orderBy('created', 'DESC')
       ->range(0, variable_get('writing365_block_count', 10))

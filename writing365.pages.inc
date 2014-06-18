@@ -18,7 +18,7 @@ function writing365_page_user($account) {
   $query = db_select('node', 'n')->extend('PagerDefault');
   $nids = $query
     ->fields('n', array('nid', 'sticky', 'created'))
-    ->condition('type', 'journal')
+    ->condition('type', 'writing365')
     ->condition('uid', $account->uid)
     ->condition('status', 1)
     ->orderBy('sticky', 'DESC')
@@ -59,7 +59,7 @@ function writing365_page_last() {
   $query = db_select('node', 'n')->extend('PagerDefault');
   $nids = $query
     ->fields('n', array('nid', 'sticky', 'created'))
-    ->condition('type', 'journal')
+    ->condition('type', 'writing365')
     ->condition('status', 1)
     ->orderBy('sticky', 'DESC')
     ->orderBy('created', 'DESC')
@@ -91,7 +91,7 @@ function writing365_feed_user($account) {
 
   $nids = db_select('node', 'n')
     ->fields('n', array('nid', 'created'))
-    ->condition('type', 'journal')
+    ->condition('type', 'writing365')
     ->condition('uid', $account->uid)
     ->condition('status', 1)
     ->orderBy('created', 'DESC')
@@ -112,7 +112,7 @@ function writing365_feed_user($account) {
 function writing365_feed_last() {
   $nids = db_select('node', 'n')
     ->fields('n', array('nid', 'created'))
-    ->condition('type', 'journal')
+    ->condition('type', 'writing365')
     ->condition('status', 1)
     ->orderBy('created', 'DESC')
     ->range(0, variable_get('feed_default_items', 10))
