@@ -7,40 +7,7 @@
 
 /**
  * Implements hook_node_info().
- * Define module-provided node types.
- *
- *This hook allows a module to define one or more of its own node types. For example, the blog module uses it to define a blog node-type named "Blog entry." The name and attributes of each desired node type are specified in an array returned by the hook.
- *
- *Only module-provided node types should be defined through this hook. User- provided (or 'custom') node types should be defined only in the 'node_type' database table, and should be maintained by using the node_type_save() and node_type_delete() functions.
- *
- *Return value
- *
- *An array of information defining the module's node types. The array contains a sub-array for each node type, with the machine-readable type name as the key. Each sub-array has up to 10 attributes. Possible attributes:
- *
- *name: (required) The human-readable name of the node type.
- *base: (required) The base string used to construct callbacks corresponding to this node type (for example, if base is defined as example_foo, then example_foo_insert will be called when inserting a node of that type). This string is usually the name of the module, but not always.
- *description: (required) A brief description of the node type.
- *help: (optional) Help information shown to the user when creating a node of this type.
- *has_title: (optional) A Boolean indicating whether or not this node type has a title field.
- *title_label: (optional) The label for the title field of this content type.
- *locked: (optional) A Boolean indicating whether the administrator can change the machine name of this type. FALSE = changeable (not locked), TRUE = unchangeable (locked).
- *The machine name of a node type should contain only letters, numbers, and underscores. Underscores will be converted into hyphens for the purpose of constructing URLs.
- *
- *All attributes of a node type that are defined through this hook (except for 'locked') can be edited by a site administrator. This includes the machine-readable name of a node type, if 'locked' is set to FALSE.
- *
- *Related topics
- *
- *Hooks
- *Allow modules to interact with the Drupal core.
- *Node API Hooks
- *Functions to define and modify content types.
- *3 functions implement hook_node_info()
- *3 invocations of hook_node_info()
- *File
- *
- *modules/node/node.api.php, line 914
- *Hooks provided by the Node module.
- *
+ * 
  */
 function writing365_node_info() {
   return array(
@@ -56,42 +23,102 @@ function writing365_node_info() {
 }
 
 /**
+ * Define the Writing 365 module's roles and weights 
+ */
+function writing365_default_roles () {
+	$roles = array();
+	$roles['Instructor'] = array (
+		'name' => 'Instructor',
+		'weight' => '3',
+	);
+	return $roles;
+}
+
+
+/**
+ * Development utility to check roles. 
+ * 
+ */
+
+function writing365_role_check ($account) {
+	if (!user_access('view user roles')) {
+		return;
+	}
+	// get user roles.
+	$list = $account->roles;
+	if (!empty($list)) {
+		// Prepare the information for themeing
+		$variables = array(
+			'items' => $list,
+		);
+		$content =  theme('item_list', $variables);
+		// Attach the content to the user page according to the API.
+		$account->content['summary']['output'] = array (
+			'#type' => 'user_profile_item',
+			'#title' => t('User roles'),
+			'#markup' => $content,
+			'#attributes' => array('class' => array('content-creation')),
+		);
+	}
+}
+
+/**
+ * Development utility to check the content types that a user can create
+ * 
+ */
+function writing365_content_type_check ($account) {
+	if (!user_access('view content creation permissions')) {
+		return;
+	}
+	// Get the defined node types
+	$node_types = node_permissions_get_configured_types();
+	if (empty($node_types)){
+		return;
+	}
+	// Make an array for the list output.
+	$list = array();
+	foreach ($node_types as $type) {
+		if (user_access('create ' . $type . ' content' , $account)) {
+			// Get the human-readable name fo the content type.
+			$list[] = check_plain(node_type_get_name($type));
+		}
+	}
+	if (!empty($list)) {
+		// prepare the information for theming.
+		$variables = array(
+			'items' => $list,
+		);
+		$content = theme('item_list', $variables);
+		// Attach the content to the user page according to the API.
+		if (!isset($account->content['example'])) {
+			$account->content['example'] = array();
+		}
+		$account->content['example'] += array(
+			'#type' => 'user_profile_category',
+			'#attributes' => array('class' => array('user-member')),
+			'#weight' => 5,
+			'#title'=> t('Content '),
+		);
+		$account->content['example']['output'] = array(
+			'#type' => 'user_profile_item',
+			'#title' => t('Content creation permissions'),
+			'#markup' => $content,
+			'#attributes' => array('class' => array('content-creation')),
+		);
+	}
+}
+
+/**
  * Implements hook_user_view().
- * 7 user.api.php	hook_user_view($account, $view_mode, $langcode)
- * The user's account information is being displayed.
- * 
- * The module should format its custom additions for display and add them to the $account->content array.
- * 
- * Note that when this hook is invoked, the changes have not yet been written to the database, because a database transaction is still in progress. The transaction is not finalized until the save operation is entirely completed and user_save() goes out of scope. You should not rely on data in the database at this time as it is not updated yet. You should also note that any write/update database queries executed from this hook are also not committed immediately. Check user_save() and db_transaction() for more info.
- * 
- * Parameters
- * 
- * $account: The user object on which the operation is being performed.
- * 
- * $view_mode: View mode, e.g. 'full'.
- * 
- * $langcode: The language code used for rendering.
- * 
- * See also
- * 
- * hook_user_view_alter()
- * 
- * hook_entity_view()
- * 
- * Related topics
- * 
- * Hooks
- * Allow modules to interact with the Drupal core.
- * 4 functions implement hook_user_view()
- * 4 invocations of hook_user_view()
- * File
- * 
- * modules/user/user.api.php, line 348
- * Hooks provided by the User module.
  * 
  */
 function writing365_user_view($account) {
-  if (user_access('create writing365 content', $account)) {
+	// role check debug function 
+	writing365_role_check($account);
+	// content-type creation function
+	writing365_content_type_check($account);
+	
+  if (user_access('Writing 365 Journal Entry', $account)) {
     $account->content['summary']['writing365'] =  array(
       '#type' => 'user_profile_item',
       '#title' => t('Writing 365 Journal'),
@@ -146,39 +173,6 @@ function writing365_view($node, $view_mode) {
 
 /**
  * Implements hook_node_view().
- * 7 node.api.php	hook_node_view($node, $view_mode, $langcode)
- *Act on a node that is being assembled before rendering.
- *
- *The module may add elements to $node->content prior to rendering. This hook will be called after hook_view(). The structure of $node->content is a renderable array as expected by drupal_render().
- *
- *When $view_mode is 'rss', modules can also add extra RSS elements and namespaces to $node->rss_elements and $node->rss_namespaces respectively for the RSS item generated for this node. For details on how this is used, see node_feed().
- *
- *Parameters
- *
- *$node: The node that is being assembled for rendering.
- *
- *$view_mode: The $view_mode parameter from node_view().
- *
- *$langcode: The language code used for rendering.
- *
- *See also
- *
- *blog_node_view()
- *
- *forum_node_view()
- *
- *comment_node_view()
- *
- *hook_entity_view()
- *
- *Related topics
- *
- *Hooks
- *Allow modules to interact with the Drupal core.
- *Node API Hooks
- *Functions to define and modify content types.
- *8 functions implement hook_node_view()
- *4 invocations of hook_node_view()
  *
  */
 function writing365_node_view($node, $view_mode) {
@@ -201,10 +195,7 @@ function writing365_node_view($node, $view_mode) {
 
 /**
  * Implements hook_menu().
- * see documentation at 
- * https://api.drupal.org/api/drupal/modules%21system%21system.api.php/function/hook_menu/7
  * 
- * If stuff is broken, look here
  */
 function writing365_menu() {
   $items['writing365'] = array(

@@ -13,6 +13,20 @@ function writing365_install() {
   node_types_rebuild();
   $types = node_type_get_types();
   node_add_body_field($types['writing365']);
+  
+  
+  $roles = writing365_default_roles();
+  foreach ($roles as $value) {
+  	$role = new stdClass();
+  	
+  	// check to ensure that the role isn't already returned
+  	if (!user_role_load_by_name($value)) {
+  		$role->name = $value['name'];
+  		$role->weight = $value['weight'];
+  		
+  		user_role_save($role);
+  	}
+  }
 }
 
 /**
@@ -24,4 +38,6 @@ function writing365_uninstall() {
   $node_type_delete = db_delete('node_type')
   	->condition('module', 'writing365')
   	->execute();
+  
+  //user_role_delete('instructor');
 }
