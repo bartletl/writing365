@@ -28,7 +28,7 @@ function writing365_node_info() {
 function writing365_default_roles () {
 	$roles = array();
 	$roles['Instructor'] = array (
-		'name' => 'Instructor',
+		'name' => 'instructor',
 		'weight' => '3',
 	);
 	return $roles;

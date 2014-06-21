@@ -39,5 +39,5 @@ function writing365_uninstall() {
   	->condition('module', 'writing365')
   	->execute();
   
-  //user_role_delete('instructor');
+  user_role_delete('instructor');
 }
