@@ -33,11 +33,23 @@ function writing365_install() {
  * Implements hook_uninstall().
  */
 function writing365_uninstall() {
+	// clean uninstall returns the database back to its state before the module was installed. No trace will be left of the Writing 365 module
   variable_del('writing365_block_count');
   
   $node_type_delete = db_delete('node_type')
   	->condition('module', 'writing365')
   	->execute();
   
-  user_role_delete('instructor');
+  // determine the rid for the instructor role
+  $rid = db_query('Select rid from {role} where name = :name', array(':name' => 'instructor'))->fetchField();
+   
+  $delete_roles = db_delete('users_roles')
+  ->condition('rid', $rid)
+  ->execute();
+  	
+  $delete_instructor_role = db_delete('role')
+  	->condition('name', 'instructor')
+  	->execute();
+  
+  // delete all Writing 365 content.
 }

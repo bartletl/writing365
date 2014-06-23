@@ -15,7 +15,7 @@ function writing365_node_info() {
       'name' => t('Writing 365 Journal Entry'),
       'base' => 'writing365',
       'description' => t('Use for Writing 365 journals. Every student gets a personal journal.'),
-      'help' => t('This is your personal journal and is only visible to you. Write at least 365 words, and you will get credit for having written today.'),
+      'help' => t('This is your personal journal and is visible only to you. Write at least 365 words, and you will get credit for having written today.'),
       'has_title' => TRUE,
       'locked' => TRUE,
     )
