@@ -14,6 +14,10 @@ function writing365_install() {
   $types = node_type_get_types();
   node_add_body_field($types['writing365']);
   
+  //close comments
+  variable_set('comment_writing365', 0);
+  
+  
   
   $roles = writing365_default_roles();
   foreach ($roles as $value) {
@@ -52,4 +56,14 @@ function writing365_uninstall() {
   	->execute();
   
   // delete all Writing 365 content.
+  
+  //first select the nids
+  $writing365_nids = db_query('select nid from {node} where type = :type', array(':type' => 'writing365'));
+  
+  // delete the nids
+  $writing365_node_delete = db_delete('node')
+  ->condition('type', 'writing365')
+  ->execute();
+  //select nid where type = 'writing365'
+  		
 }
