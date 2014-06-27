@@ -44,6 +44,11 @@ function writing365_uninstall() {
   	->condition('module', 'writing365')
   	->execute();
   
+  // delete the entry that turns of comments for the data type
+  $variable_delete = db_delete('variable')
+  ->condition('name', 'comment_writing365')
+  ->execute();
+  
   // determine the rid for the instructor role
   $rid = db_query('Select rid from {role} where name = :name', array(':name' => 'instructor'))->fetchField();
    
@@ -54,16 +59,39 @@ function writing365_uninstall() {
   $delete_instructor_role = db_delete('role')
   	->condition('name', 'instructor')
   	->execute();
-  
+
   // delete all Writing 365 content.
   
   //first select the nids
   $writing365_nids = db_query('select nid from {node} where type = :type', array(':type' => 'writing365'));
-  
+
   // delete the nids
   $writing365_node_delete = db_delete('node')
   ->condition('type', 'writing365')
   ->execute();
-  //select nid where type = 'writing365'
-  		
+  
+  //delete module's field_revision_body nodes
+  $revision_delete = db_delete('field_revision_body')
+  ->condition('bundle', 'writing365')
+  ->execute();
+  /**
+  foreach ($writing365_nids as $value) {
+  	$delete_nid = $value->nid;
+  	//field_data_body deletes
+  	$field_delete = db_delete('field_data_body')
+  	->condition('entity_id', $delete_nid)
+  	->execute();
+  	
+  	//node_revision
+  	$node_revision_delete = db_delete('node_revision')
+  	->condition('nid', $delete_nid)
+  	->execute();
+  	
+  	//node_comment_statistics
+  	$node_comment_delete = db_delete('node_comment_statistics')
+  	->condition('nid', $delete_nid)
+  	->execute();
+  }
+*/ 
+  
 }
