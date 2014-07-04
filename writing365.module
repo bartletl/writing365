@@ -35,6 +35,36 @@ function writing365_default_roles () {
 }
 
 
+
+/**
+ * implements hook_user_login
+ */
+function writing365_user_login(&$edit, $account) {
+	global $user;
+	user_load($user->uid);
+	// check to see if the user has logged in and posted a journal entry today
+	$userID = $user->uid;
+	$todaysDate = date("Y-m-d");
+	$message = "User " . $userID . " logged in on " . $todaysDate . "." ;
+	watchdog(WATCHDOG_NOTICE, $message);
+	$lastLoginUnix = db_query('Select access from {users} where uid = :uid', array(':uid' => $userID))->fetchField();
+	$lastLoginHumanReadable = date("Y-m-d", $lastLoginUnix);
+	if($todaysDate == $lastLoginHumanReadable) {
+		watchdog(WATCHDOG_NOTICE, 'user logged in previously today');
+		//@todo this is the WRONG query. Needs a timestamp parameter
+		$nid = db_query('Select nid from {node} where type = :type and uid = :uid', array(':type' => 'writing365', ':uid' => $userID))->fetchField();
+		watchdog(WATCHDOG_NOTICE, 'alert');
+		if ($nid) {
+			//do something
+			drupal_goto('node/{nid}/writing365');
+		} else {
+			watchdog(WATCHDOG_NOTICE, "user hasn't created a journal entry today.");
+			//do nothing
+			return;
+		}	
+	}
+}
+
 /**
  * Development utility to check roles. 
  * 
@@ -268,7 +298,7 @@ function writing365_menu_local_tasks_alter(&$data, $router_item, $root_path) {
 /**
  * Access callback for user blog pages.
  * 
- * This is not a hook, so we need to check how it's immplemented.
+ * This is not a hook, so we need to check how it's implemented.
  * @todo check
  */
 function writing365_page_user_access($account) {
@@ -284,7 +314,7 @@ function writing365_page_user_access($account) {
 function _writing365_post_exists($account) {
   return (bool)db_select('node', 'n')
     ->fields('n', array('nid'))
-    ->condition('type', 'journal')
+    ->condition('type', 'writing365')
     ->condition('uid', $account->uid)
     ->condition('status', 1)
     ->range(0, 1)
@@ -292,6 +322,7 @@ function _writing365_post_exists($account) {
     ->execute()
     ->fetchField();
 }
+
 
 /**
  * Implements hook_block_info().

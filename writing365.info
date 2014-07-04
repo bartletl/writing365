@@ -1,7 +1,7 @@
 name = writing365
 description = Extends Drupal Core's blog module to enable student writing journals. 
 package = Writing Center Tools
-version = 7.x-1.2
+version = 7.x-1.2-dev
 core = 7.x
 files[] = writing365.install
 files[] = writing365.module
