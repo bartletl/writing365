@@ -3,6 +3,7 @@ description = Extends Drupal Core's blog module to enable student writing journa
 package = Writing Center Tools
 version = 7.x-1.2-dev
 core = 7.x
+dependencies[] = wordcounter
 files[] = writing365.install
 files[] = writing365.module
 files[] = writing365.pages.inc
