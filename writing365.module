@@ -259,12 +259,7 @@ function writing365_menu() {
     'type' => MENU_CALLBACK,
     'file' => 'writing365.pages.inc',
   );
-  $items['writing365/scorecard'] = array(
-  	'title' => 'Scorecard',
-	'page callback' => 'writing365_scorecard',
-	'access arguments' => array('access content'),
-	'type' => MENU_CALLBACK,
-	);
+
   return $items;
 }
 
@@ -407,25 +402,4 @@ function writing365_rdf_mapping() {
       ),
     ),
   );
-}
-
-function writing365_scorecard() {
-
-	$output = '<div class="wrapper">' . '<div class="title"><h2>Write 365 Scorecard</h2></div>';
-	$output .= '<div class="scorecard">';
-	$output .= '<div class="arrows" id="left">' . '<img src="/sites/all/themes/images/left2.png" title="See the beginning of your score card!">' . '<img src="/sites/all/themes/images/left1.png" title="Go back 10 tiles"></div>';
-	$output .= '<div class="box" id="dow1"><img src="/sites/all/themes/images/strike.png" title="Great job! You wrote at least 365 words."></div>';
-	$output .= '<div class="box" id="dow2"><img src="/sites/all/themes/images/spare.png" title="You wrote under 365 words."></div>';
-	$output .= '<div class="box" id="dow3"><img src="/sites/all/themes/images/gutter.png" title="You did not write any words."></div>';
-	$output .= '<div class="box" id="dow4"><img src="/sites/all/themes/images/strike.png" title="Great job! You wrote at least 365 words."></div>';
-	$output .= '<div class="box" id="dow5"><img src="/sites/all/themes/images/strike.png" title="Great job! You wrote at least 365 words."></div>';
-	$output .= '<div class="box" id="dow6"><img src="/sites/all/themes/images/spare.png" title="You wrote under 365 words."></div>';
-	$output .= '<div class="box" id="dow7"><img src="/sites/all/themes/images/gutter.png" title="You did not write any words."></div>';
-	$output .= '<div class="box" id="dow8"><img src="/sites/all/themes/images/strike.png" title="Great job! You wrote at least 365 words."></div>';
-	$output .= '<div class="box" id="dow9"><img src="/sites/all/themes/images/strike.png" title="Great job! You wrote at least 365 words."></div>';
-	$output .= '<div class="box" id="dow10"><img src="/sites/all/themes/images/spare.png" title="You wrote under 365 words."></div>';
-	$output .= '<div class="arrows" id="right"><img src="/sites/all/themes/images/right1.png" title="Go forward 10 tiles"><img src="/sites/all/themes/images/right2.png" title="See the most recent part of your score card!"></div> </div>';
-
-	return $output;
-
 }
