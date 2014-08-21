@@ -1,0 +1,132 @@
+/*
+   tablestyle.css
+   htdocs
+   
+   Created by Lily Bartlett on 2014-07-22.
+   Copyright 2014 Somebody. All their rights reserved.
+*/
+div#wrapper {
+width:100%;
+text-align:center;
+}
+/*Title text orientation*/
+div#title {
+	display:table;
+	margin:0 auto;
+}
+/*wrapper sets scorecard height and width*/
+div.scorecard {
+	height: 100px;
+	position: absolute;
+	width: 100%;
+}
+
+/*places arrows around scorecard*/
+div.arrows {
+	padding:5px;
+	top: 10px;
+	margin: 0 0 0 0;
+}
+/*anchors left arrows*/
+div#left {
+	float: left;
+	position: absolute;
+	border: none;
+}
+/*anchors right arrows*/
+div#right {
+	float: left;
+	left: 185px;
+	position: relative;
+	border: none;
+}
+/*sets size of each scorecard box*/
+div.box {
+	width: 50px;
+	height: 50px;
+	position: relative;
+}
+/*each div id following is an individual scorecard box
+ each is positioned relative to the box before it and aligned with the arrows*/
+#dow1 {
+	float: left;
+	/*	width:10%;*/
+	position: absolute;
+	/*top:20px;*/
+	left: 70px;
+	border: 4px #000 solid;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+#dow2 {
+	float: left;
+	left: 135px;
+	border: 4px #000 solid;
+	margin: auto;
+	padding: 0 0 0 0;
+}
+#dow3 {
+	float: left;
+	left: 140px;
+	top: 0;
+	border: 4px #000 solid;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+#dow4 {
+	float: left;
+	left: 145px;
+	top: 0;
+	border: 4px #000 solid;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+#dow5 {
+	float: left;
+	left: 150px;
+	top: 0;
+	border: 4px #000 solid;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+#dow6 {
+	float: left;
+	left: 155px;
+	top: 0;
+	border: 4px #000 solid;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+#dow7 {
+	float: left;
+	left: 160px;
+	top: 0;
+	border: 4px #000 solid;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+#dow8 {
+	float: left;
+	left: 165px;
+	top: 0;
+	border: 4px #000 solid;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+#dow9 {
+	float: left;
+	left: 170px;
+	top: 0;
+	border: 4px #000 solid;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+#dow10 {
+	float: left;
+	left: 175px;
+	top: 0;
+	border: 4px #000 solid;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
