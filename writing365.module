@@ -261,11 +261,22 @@ function writing365_menu() {
   );
   $items['writing365/scorecard'] = array(
   	'title' => 'Scorecard',
-	'page callback' => 'writing365_scorecard',
-	'access arguments' => array('access content'),
-	'type' => MENU_CALLBACK,
+		'page callback' => 'writing365_scorecard',
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
 	);
-  return $items;
+	
+	//New form callback
+  $items['writing365/form'] = array(
+    'title' => 'Journal Entry',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('writing365_form'),
+    'access callback' => TRUE,
+    'description' => 'Tutorial',
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'writing365_form.inc',
+  );
+    return $items;
 }
 
 /**
@@ -291,7 +302,7 @@ function writing365_menu_local_tasks_alter(&$data, $router_item, $root_path) {
       '#theme' => 'menu_local_action',
     );
     if (user_access('create journal entry')) {
-      $data['actions']['output']['writing365']['#link']['title'] = t('Create new journal entry.');
+      $data['actions']['output']['writing365']['#link']['title'] = t('Create new journal entry');
       $data['actions']['output']['writing365']['#link']['href'] = 'node/add/writing365';
     }
     else {
@@ -425,7 +436,7 @@ function writing365_scorecard() {
 	$output .= '<div class="box" id="dow9"><img src="/sites/all/themes/images/strike.png" title="Great job! You wrote at least 365 words."></div>';
 	$output .= '<div class="box" id="dow10"><img src="/sites/all/themes/images/spare.png" title="You wrote under 365 words."></div>';
 	$output .= '<div class="arrows" id="right"><img src="/sites/all/themes/images/right1.png" title="Go forward 10 tiles"><img src="/sites/all/themes/images/right2.png" title="See the most recent part of your score card!"></div> </div>';
-
+	
 	return $output;
 
 }
