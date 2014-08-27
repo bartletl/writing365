@@ -28,15 +28,16 @@ div.arrows {
 	margin: 0 0 0 0;
 }
 /*anchors left arrows*/
-div#left {
-	float: left;
-	position: absolute;
+div#leftarrow {
+float:left;
+left:10px;
+	position: relative;
 	border: none;
 }
 /*anchors right arrows*/
-div#right {
+div#rightarrow {
 	float: left;
-	left: 185px;
+	left: 80px;
 	position: relative;
 	border: none;
 }
@@ -60,14 +61,14 @@ div.box {
 }
 #dow2 {
 	float: left;
-	left: 135px;
+	left: 69px;
 	border: 4px #000 solid;
 	margin: auto;
 	padding: 0 0 0 0;
 }
 #dow3 {
 	float: left;
-	left: 140px;
+	left: 70px;
 	top: 0;
 	border: 4px #000 solid;
 	margin: 0 0 0 0;
@@ -75,7 +76,7 @@ div.box {
 }
 #dow4 {
 	float: left;
-	left: 145px;
+	left: 71px;
 	top: 0;
 	border: 4px #000 solid;
 	margin: 0 0 0 0;
@@ -83,7 +84,7 @@ div.box {
 }
 #dow5 {
 	float: left;
-	left: 150px;
+	left: 72px;
 	top: 0;
 	border: 4px #000 solid;
 	margin: 0 0 0 0;
@@ -91,7 +92,7 @@ div.box {
 }
 #dow6 {
 	float: left;
-	left: 155px;
+	left: 73px;
 	top: 0;
 	border: 4px #000 solid;
 	margin: 0 0 0 0;
@@ -99,7 +100,7 @@ div.box {
 }
 #dow7 {
 	float: left;
-	left: 160px;
+	left: 74px;
 	top: 0;
 	border: 4px #000 solid;
 	margin: 0 0 0 0;
@@ -107,7 +108,7 @@ div.box {
 }
 #dow8 {
 	float: left;
-	left: 165px;
+	left: 75px;
 	top: 0;
 	border: 4px #000 solid;
 	margin: 0 0 0 0;
@@ -115,7 +116,7 @@ div.box {
 }
 #dow9 {
 	float: left;
-	left: 170px;
+	left: 76px;
 	top: 0;
 	border: 4px #000 solid;
 	margin: 0 0 0 0;
@@ -123,7 +124,7 @@ div.box {
 }
 #dow10 {
 	float: left;
-	left: 175px;
+	left: 77px;
 	top: 0;
 	border: 4px #000 solid;
 	margin: 0 0 0 0;
